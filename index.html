@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Homenagem à Professora Evinha</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto&display=swap');
+
+body {
+  margin: 0;
+  padding: 50px 0; /* Espaço no topo e embaixo */
+  font-family: 'Roboto', sans-serif;
+  background: linear-gradient(135deg, #ffecd2, #fcb69f);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Permite scroll */
+  min-height: 100vh;
+  overflow-y: auto; /* Habilita scroll vertical */
+  cursor: pointer;
+}
+
+.container {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 40px 30px;
+  border-radius: 25px;
+  max-width: 750px;
+  text-align: center;
+  box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+  position: relative;
+  z-index: 1;
+  transition: transform 0.3s;
+  margin-bottom: 50px;
+}
+
+.container:hover {
+  transform: scale(1.05);
+}
+
+h1 {
+  font-family: 'Pacifico', cursive;
+  color: #e63946;
+  font-size: 2.8em;
+  margin-bottom: 20px;
+}
+
+p {
+  font-size: 1.15em;
+  line-height: 1.7;
+  color: #333;
+  margin-bottom: 20px;
+  min-height: 50px;
+}
+
+.signature {
+  font-style: italic;
+  font-weight: bold;
+  color: #6a0572;
+  margin-top: 25px;
+  font-size: 1.2em;
+  min-height: 50px;
+}
+
+/* Botão surpresa */
+#surpriseBtn {
+  padding: 15px 25px;
+  font-size: 1.2em;
+  background-color: #e63946;
+  color: #fff;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  margin-top: 15px;
+}
+
+#surpriseBtn:hover {
+  background-color: #ff66aa;
+  transform: scale(1.1);
+}
+
+/* Corações e confetes */
+.heart, .confetti {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  transform: rotate(-45deg);
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.heart {
+  background-color: #e63946;
+}
+
+.heart::before, .heart::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: #e63946;
+  border-radius: 50%;
+}
+
+.heart::before { top: -10px; left: 0; }
+.heart::after { left: 10px; top: 0; }
+
+.confetti {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background-color: #ffdd00;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(-700px) rotate(360deg); opacity: 0; }
+}
+
+/* Emoji animado */
+.emoji {
+  font-size: 2.2em;
+  animation: bounce 2s infinite;
+  display: inline-block;
+  margin-bottom: 10px;
+  transition: transform 0.3s;
+}
+
+.emoji:hover {
+  transform: scale(1.5) rotate(20deg);
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="emoji">🌸💖🌸</div>
+  <h1>Homenagem à Professora Evinha</h1>
+  <p id="text1"></p>
+  <p id="text2"></p>
+  <p id="text3"></p>
+  <p id="text4"></p>
+  <p id="text5"></p>
+  <p class="signature" id="signature"></p>
+  <button id="surpriseBtn">🎁 Abrir surpresa!</button>
+</div>
+
+<audio id="sound" src="https://www.soundjay.com/misc/sounds/bell-ringing-01.mp3"></audio>
+
+<script>
+// Textos detalhados
+const texts = [
+  "Querida professora, Quero expressar toda a minha admiração e carinho por você. Mesmo não sendo diretamente do apoio, sempre senti sua atenção, gentileza e cuidado comigo. Sua dedicação, paciência e alegria fazem cada dia na escola mais especial e cheio de aprendizado.",
+  "Admiro muito a forma como você trata todos com respeito, carinho e atenção. Cada palavra sua inspira confiança e faz com que todos nós nos sintamos acolhidos e compreendidos. Você realmente faz a diferença na vida de cada aluno.",
+  "Mesmo não fazendo parte do grupo do apoio, sinto que você sempre está presente de maneira especial. Sua bondade, incentivo e dedicação me motivam a aprender mais e a ser uma pessoa melhor a cada dia.",
+  "Seus gestos de carinho e atenção nos mostram que a educação vai muito além das matérias: você ensina sobre respeito, amizade e empatia. Cada sorriso seu faz o ambiente da escola mais leve e alegre.",
+  "Por tudo isso, quero agradecer profundamente e dizer que sou muito grato por ter uma professora como você. Sua luz, atenção e carinho nunca serão esquecidos. Obrigado por cada gesto, cada palavra e cada sorriso que tornam nossos dias mais felizes.",
+  "Com todo o respeito e carinho, Carlos Emanuel, seu querido aluno"
+];
+
+// Função de digitação
+function typeText(elementId, text, delay = 50, callback) {
+  const element = document.getElementById(elementId);
+  const sound = document.getElementById('sound');
+  let index = 0;
+  function type() {
+    if(index < text.length){
+      element.innerHTML += text[index];
+      index++;
+      if(Math.random() > 0.8){
+        sound.currentTime = 0;
+        sound.play();
+      }
+      setTimeout(type, delay);
+    } else if(callback) {
+      callback();
+    }
+  }
+  type();
+}
+
+// Sequência de digitação
+typeText("text1", texts[0], 30, () => {
+  typeText("text2", texts[1], 30, () => {
+    typeText("text3", texts[2], 30, () => {
+      typeText("text4", texts[3], 30, () => {
+        typeText("text5", texts[4], 30, () => {
+          typeText("signature", texts[5], 40);
+        });
+      });
+    });
+  });
+});
+
+// Criar partículas
+function createParticle(x, y, type){
+  const particle = document.createElement('div');
+  particle.classList.add(type);
+  particle.style.left = (x - 10) + 'px';
+  particle.style.top = (y - 10) + 'px';
+  particle.style.animation = `floatUp ${Math.random()*3 + 4}s ease-out forwards`;
+  if(type === 'confetti'){
+    const colors = ['#ffdd00','#00ff99','#ff66cc','#66ccff','#ff9966','#ff3399','#33ffcc'];
+    particle.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
+  }
+  document.body.appendChild(particle);
+  setTimeout(() => particle.remove(), 5000);
+}
+
+// Clique gera partículas + som
+document.body.addEventListener('click', function(e){
+  createParticle(e.pageX, e.pageY, 'heart');
+  createParticle(e.pageX, e.pageY, 'confetti');
+  document.getElementById('sound').currentTime = 0;
+  document.getElementById('sound').play();
+});
+
+// Partículas aleatórias contínuas
+setInterval(() => {
+  const x = Math.random() * window.innerWidth;
+  const y = window.innerHeight + 20;
+  createParticle(x, y, Math.random() > 0.5 ? 'heart' : 'confetti');
+}, 500);
+
+// Botão surpresa
+document.getElementById('surpriseBtn').addEventListener('click', function(){
+  for(let i=0;i<200;i++){
+    const x = Math.random()*window.innerWidth;
+    const y = Math.random()*window.innerHeight;
+    createParticle(x, y, Math.random() > 0.5 ? 'heart' : 'confetti');
+  }
+  const sound = document.getElementById('sound');
+  sound.currentTime = 0;
+  sound.play();
+  this.disabled = true;
+  this.innerText = "🎉 Surpresa aberta!";
+});
+</script>
+</body>
+</html>
